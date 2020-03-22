@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap&subset=latin-ext"
+        rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap&subset=latin-ext" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap&subset=latin-ext"
+        rel="stylesheet">
+    <style>
+        /* FOOPICKER LIBRARY START */
+
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600);
+
+        .foopicker {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-shadow: 0 0 3px #bbb;
+            color: #666;
+            font-family: 'Source Sans Pro', sans-serif;
+            margin-top: 10px;
+            width: 245px;
+        }
+
+        .foopicker table {
+            width: 100%;
+        }
+
+        .foopicker th,
+        .foopicker td {
+            text-align: center;
+        }
+
+        .foopicker__calendar {
+            font-size: 13px;
+            padding: 5px;
+        }
+
+        .foopicker__day {
+            border-radius: 100%;
+            cursor: pointer;
+            padding: 5px 2px;
+            transition: all .2s ease-out;
+            width: 30px;
+        }
+
+        .foopicker__day:hover {
+            background: rgba(220, 46, 46, 0.829);
+            color: #fff;
+        }
+
+        .foopicker__day--today {
+            background: rgba(199, 199, 199, 0.562);
+            color: #666;
+        }
+
+        .foopicker__day--selected {
+            background: #DC2E2E;
+            color: #fff;
+        }
+
+        .foopicker__day--disabled {
+            background: #e6e6e6;
+            color: #bfbfbf;
+            cursor: not-allowed;
+        }
+
+        .foopicker__day--disabled:hover {
+            background: #e6e6e6;
+            color: #bfbfbf;
+        }
+
+        .foopicker__week {
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .foopicker__header {
+            background: #f2f2f4;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .foopicker__header div {
+            display: inline-block;
+        }
+
+        .foopicker__arrow {
+            background-repeat: no-repeat;
+            cursor: pointer;
+            height: 24px;
+            outline: 0;
+            position: absolute;
+            top: 31px;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            width: 14px;
+        }
+
+        .foopicker__arrow--next {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN5wAADecBmRSqJgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADWSURBVBiVfY8xSkNBFEXPe0njxGB24R4srM1YjFhMGYjYuRxLMWI7lZ8EDAqKiN8mC7B2BULMiPh/noUYvoW57Tncy5Xx+OZZhFfVauC9/6QRFeEFiMtl6yqlcuMPzPntGLgE2XPufZrS/eYKxhjr2aw8EuEC2HXu67ooii6A/FpmJpPJ7akIJ0CpWvWludEUzLhT1uS/2ifVygtASqnV6fTOzBiCPNZ13g8hzPUHbI3MGIrwkHPbhxDmAG3neudmDMCmi0X3MMadj9VPM7aBpFofNAHAN0NkW9nLdIQRAAAAAElFTkSuQmCC);
+            right: 14px;
+        }
+
+        .foopicker__arrow--prev {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAMCAYAAACulacQAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN5wAADecBmRSqJgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADXSURBVBiVXZAxTsNAFETfmMRWvL4C3GVRIlFElFRYHABxB1+CBlFEFBFsgQJrWTIIQRWq9NyDLrG8FGDkeNqn+TPzxUBVVSVtO7oLgaOoD5xbT9r2YAWcSXypA977VIqfQFPg3phxHgHUdW0g8aBpCGFpzDi31jaRc+/ZbqdS4jgEbjebz9xa2wDI+5e3P3A9n8+uJIUuaq/QUFEch1PgQ+KyLF9viqL4N6grtN3q+fd8WGZZfGGtbQZTkhUwk/SQpqNz9TOcW0/S9PsRdAIs9mD/fRAOfwCC1k8eHoJobwAAAABJRU5ErkJggg==);
+            left: 18px;
+        }
+
+        .foopicker__month {
+            font-size: .875em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* FOOPICKER LIBRARY END */
+
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            width: 100%;
+            min-width: 280px;
+            /* height: 600px; */
+            margin: 10px auto;
+            /* font-family: 'Poppins', sans-serif; */
+            color: #676767;
+            padding: 5px;
+        }
+
+        .wrapper__text {
+            color: #000;
+        }
+
+        .wrapper__text--bold {
+            font-weight: 500;
+        }
+
+        .wrapper__text--warn {
+            color: #DC2E2E;
+            line-height: 21px;
+            padding-top: 4px;
+        }
+
+        .wrapper__text--warn-hidden {
+            visibility: hidden;
+        }
+
+        .form__submit-warn {
+            display: inline-block;
+            max-width: 480px;
+            width: calc(100% - 500px);
+            padding-left: 30px;
+        }
+
+        .form {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px 0;
+        }
+
+        .form__field {
+            width: 45%;
+            display: inline-block;
+            margin-right: 5%;
+            margin-top: 30px;
+        }
+
+        .form__field--three-opts {
+            margin-right: 50px;
+            display: inline;
+            width: auto;
+        }
+
+        .form__field--wide {
+            width: 100%;
+            margin-right: 0;
+            margin-top: 30px;
+        }
+
+        .form__field--wide--submit {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .form__input-container {
+            width: 45%;
+            margin-right: 5%;
+        }
+
+        .form__input-container--wide {
+            width: 100%;
+        }
+
+        .form__field::placeholder {
+            /* font-family: 'Poppins', sans-serif; */
+        }
+
+        .form__input {
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            width: 100%;
+            transition: border .3s;
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+
+        /* .form__input:hover {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+            transition: border .3s;
+        } */
+
+        .form__label {
+            position: relative;
+            transition: transform .3s;
+        }
+
+        /* .form__label:hover .form__label-text {
+            transform: translate(-5px, -20px) scale(0.8);
+            transition: transform .3s;
+        } */
+
+        .form__label-text--cursor-text {
+            cursor: text;
+        }
+
+        .form__label-text--moved {
+            transform: translate(-10%, -20px) scale(0.8);
+            transition: transform .3s;
+            cursor: default;
+        }
+
+        .form__label-text {
+            display: inline-block;
+            position: absolute;
+            z-index: 0;
+            transition: transform .3s;
+        }
+
+        .red-star {
+            color: #CB3637;
+        }
+
+        .form__label-text--red {
+            color: #CB3637;
+        }
+
+        .form__text--red {
+            color: #CB3637;
+        }
+
+        .form__text--warn-hidden {
+            visibility: hidden;
+        }
+
+        .form__option {
+            /* font-family: 'Poppins', sans-serif; */
+        }
+
+        .form__text-container {
+            width: 45%;
+            margin-top: 30px;
+        }
+
+        .form__text-container--wide {
+            width: 100%;
+        }
+
+        .form__text-container--top-space {
+            margin-top: 40px;
+        }
+
+        .form__text {
+            font-size: 13px;
+        }
+
+        .form__text--italic {
+            font-style: italic;
+        }
+
+        .form__text--moved {
+            padding-left: 25px;
+        }
+
+        .form__line {
+            height: 2px;
+            width: 0%;
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            transition: width .3s;
+        }
+
+        .form__line--red {
+            border-bottom: 2px solid #CB3637;
+        }
+
+        .form__line-container {
+            text-align: center;
+            height: 2px;
+            width: 100%;
+            position: absolute;
+            top: 6px;
+        }
+
+        a {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .form__line--wide {
+            width: 100%;
+            transition: width .3s;
+        }
+
+        .select__input {
+            -webkit-appearance: none;
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/vgioif11q6alg749.png');
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-size: 12px;
+            background-position-x: right;
+        }
+
+        .select__input--date {
+            -webkit-appearance: none;
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/vgioif11q6alg749.png');
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-size: 12px;
+            background-position-x: right;
+        }
+
+
+        .form__checkmark {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            position: absolute;
+            top: 5px;
+            left: 0px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+        .form__checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 3px;
+            top: -1px;
+            width: 5px;
+            height: 10px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .form__checkbox-container {
+            /* padding-bottom: 8px; */
+            position: relative;
+        }
+
+        .form__checkbox:checked~.form__checkmark {
+            background-color: #5F5F5F;
+        }
+
+        .form__checkbox:checked~.form__checkmark:after {
+            display: block;
+        }
+
+        .form__checkbox {
+            display: none;
+        }
+
+        .form__checkbox-label {
+            padding-left: 22px;
+            font-style: normal;
+        }
+
+        .form__checkbox-label a {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .basic-text--wide {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .form__submit-container {
+            width: 100%;
+            max-width: 500px;
+            height: 45px;
+            display: inline-block;
+            position: relative;
+            z-index: 5;
+        }
+
+        .form__submit {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            border: none;
+            color: #fff;
+            background-color: transparent;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all .3s;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 4;
+        }
+
+        .form__submit:active {
+            box-shadow: 0px 7px 17px -2px rgba(0, 0, 0, 0.34);
+            transition: all .3s;
+        }
+
+        /* .form__submit-text {
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        } */
+
+        .form__submit-el-container-container {
+            width: 100%;
+            height: 45px;
+            display: inline-block;
+            position: absolute;
+            z-index: 3;
+        }
+
+        .form__submit-el-container {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            position: relative;
+        }
+
+        .form__submit-el {
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+            /* visibility: hidden; */
+            position: absolute;
+        }
+
+        .form__submit-el--anim {
+            width: 100%;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .form__submit-el--cons {
+            background-color: #DC2E2E;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .form__submit-container:hover .form__submit-el--cons {
+            background-color: rgba(220, 46, 46, 0.829);
+            transition: all .3s;
+        }
+
+        .el-anim {
+            background-color: rgba(204, 123, 123, 0.562);
+            width: 0;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .el-animation {
+            animation-name: submit-animation;
+            animation-duration: .5s;
+            /* width: 100%; */
+            /* background-color: yellow; */
+        }
+
+        .wrong-date-format {
+            color: rgba(220, 46, 46, 0.829);
+        }
+
+        @keyframes submit-animation {
+            0% {
+                width: 0%;
+                /* visibility: visible; */
+            }
+
+            50% {
+                width: 100%;
+                /* visibility: visible; */
+            }
+
+            100% {
+                width: 0%;
+                /* visibility: hidden; */
+            }
+        }
+
+
+        .icon {
+            position: relative;
+        }
+
+        .icon::after {
+            content: "";
+            width: 25px;
+            height: 25px;
+            position: absolute;
+        }
+
+        .icon--smile::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/vhmbfyy92wpmppm2.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: -4px;
+            right: -30px;
+        }
+
+        .icon--gift::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/qxiue9js8b3s0hyx.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: -3px;
+            left: -25px;
+        }
+
+        .icon--face::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/hsnh12lrffldzp95.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: -3px;
+            left: 2px;
+        }
+
+        .icon--bike::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/6qa6y9jy3oac835q.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: 0px;
+            left: 4px;
+        }
+
+        .icon--tree::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/gegs6q62p2otgd5a.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: -2px;
+            left: 4px;
+        }
+
+        .icon--building::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/8dms8un8hbgciaw6.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: 0px;
+            left: 4px;
+        }
+
+        .icon--arm::after {
+            background: url('https://s3-eu-west-1.amazonaws.com/salesmanagoimg/ycye08cg3x15b8aa/x8ndyvqgt5qiblg3/l4c4gebjrt9ggpos.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: 0px;
+            left: 4px;
+        }
+
+        @media only screen and (max-width:920px) {
+            .form__submit-warn {
+                font-size: 14px;
+                width: calc(100% - 400px);
+                padding-left: 15px;
+            }
+
+            .form__submit-container {
+                max-width: 400px;
+            }
+        }
+
+        @media only screen and (max-width:767px) {
+            .form__field {
+                width: 100%;
+            }
+
+            .form__input-container {
+                width: 100%;
+            }
+
+            .form__text-container {
+                width: 100%;
+            }
+
+            .form__submit-warn {
+                font-size: 14px;
+                width: 100%;
+                max-width: 400px;
+                padding-left: 2px;
+            }
+
+            .form__text-container--top-space {
+                margin-top: 20px;
+            }
+        }
+
+        /* @media only screen and (max-width:767px) {
+            .form__leftpart {
+                width: 100%;
+            }
+
+            .form__rightpart {
+                width: 100%;
+            }
+
+            .wrapper {
+                height: 1050px;
+            }
+        }
+
+        @media only screen and (max-width:360px) {
+
+            .wrapper {
+                height: 1200px;
+            }
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="wrapper" id="sm-wrapper">
+        <div class="wrapper__intro">
+            <p class="wrapper__text"><span class="wrapper__text--bold">Super Offerta su Aosom: hai tempo fino al 2
+                    dicembre</span> per assicurarti un coupon
+                sconto del 20% su tutti i prodotti! Ti basta compilare il sondaggio qui sotto per ricevere un <span
+                    class="wrapper__text--bold">buono
+                    sconto del 20%</span> da applicare al tuo prossimo ordine. E c’è di più: <span
+                    class="wrapper__text--bold">puoi vincere e stravincere su Aosom!</span>
+                Infatti, se usi il coupon per acquistare in sconto entro fine anno, <span
+                    class="wrapper__text--bold">parteciperai all’estrazione di
+                    fantastici premi</span> di elettronica: smartphone, TV 4K, game console!</p>
+            <p class="wrapper__text">
+                Non farti sfuggire quest’occasione: inviaci subito il sondaggio per ricevere il codice sconto! </p>
+        </div>
+        <div class="form" id="form">
+            <input type="hidden" id="sm-form-name" name="sm-form-name" />
+
+            <div class="form__field">
+
+                <label for="sm-form-name" class="form__label">
+                    <span class="form__label-text form__label-text--animated form__label-text--cursor-text">
+                        <span class="red-star">* </span>Nome</span>
+                    <input type="text" id="part-name" class="form__input form__input--animated required-input"
+                        name="sm-form-name" required>
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <p class="form__text form__text--red form__text--warn-hidden">Il campo Nome è richiesto.</p>
+                </label>
+
+            </div>
+            <div class="form__field">
+                <label for="sm-form-name" class="form__label">
+                    <span class="form__label-text form__label-text--animated form__label-text--cursor-text"><span
+                            class="red-star">*
+                        </span>Cognome</span>
+                    <input type="text" id="part-surname" class="form__input required-input form__input--animated"
+                        name="sm-form-name" required>
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <p class="form__text form__text--red form__text--warn-hidden">Il campo Cognome è richiesto.</p>
+                </label>
+            </div>
+
+            <div class="form__field">
+                <label for="" class="form__label">
+                    <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                        </span>Regione</span>
+                    <input type="hidden" class="hidden-input" name="sm-cst.Regione" value="">
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <select type="" class="form__input select__input required-input">
+                        <option class="form__option" value="">Scegli regione</option>
+                        <option class="form__option" value="Abruzzo">Abruzzo</option>
+                        <option class="form__option" value="Basilicata">Basilicata</option>
+                        <option class="form__option" value="Calabria">Calabria</option>
+                        <option class="form__option" value="Campania">Campania</option>
+                        <option class="form__option" value="Emilia-Romagna">Emilia-Romagna</option>
+                        <option class="form__option" value="Friuli-Venezia Giulia">Friuli-Venezia Giulia</option>
+                        <option class="form__option" value="Lazio">Lazio</option>
+                        <option class="form__option" value="Liguria">Liguria</option>
+                        <option class="form__option" value="Lombardia">Lombardia</option>
+                        <option class="form__option" value="Marche">Marche</option>
+                        <option class="form__option" value="Molise">Molise</option>
+                        <option class="form__option" value="Piemonte">Piemonte</option>
+                        <option class="form__option" value="Puglia">Puglia</option>
+                        <option class="form__option" value="Sardegna">Sardegna</option>
+                        <option class="form__option" value="Sicilia">Sicilia</option>
+                        <option class="form__option" value="Toscana">Toscana</option>
+                        <option class="form__option" value="Trentino-Alto Adige">Trentino-Alto Adige</option>
+                        <option class="form__option" value="Umbria">Umbria</option>
+                        <option class="form__option" value="Valle d'Aosta">Valle d'Aosta</option>
+                        <option class="form__option" value="Veneto">Veneto</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="form__field">
+                <label for="" class="form__label">
+                    <span class="form__label-text form__label-text--moved"><span class="form__label-text--red">*
+                        </span>Sesso</span>
+                    <input type="hidden" class="hidden-input" name="sm-cst.Sesso" value="">
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <select type="" class="form__input select__input required-input">
+                        <option class="form__option" value="">Scegli genere sessuale</option>
+                        <option class="form__option" value="Maschio">Maschio</option>
+                        <option class="form__option" value="Femmina">Femmina</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="form__field">
+                <label for="sm-form-email" class="form__label">
+                    <span class="form__label-text form__label-text--animated"><span class="red-star">*
+                        </span>Email</span>
+                    <input type="email" class="form__input form__input--animated required-input" name="sm-form-email">
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <p class="form__text form__text--red form__text--warn-hidden">Il campo Email è richiesto.</p>
+                </label>
+            </div>
+
+            <div class="form__text-container">
+                <p class="form__text form__text--italic">
+                    Se sei già registrato su Aosom, usa l’email con cui ti sei iscritto
+                    <span class=" icon icon--smile"></span>
+                </p>
+                <p class="form__text form__text--italic">
+                    Ti invieremo il coupon di sconto -20% via email: controlla che sia giusta!</p>
+            </div>
+            <div class="form__field">
+                <label for="sm-form-email" class="form__label">
+                    <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                        </span>Data di nascita</span>
+                    <input type="hidden" name="sm-form-birthdayDay" id="sm-form-birthdayDay" />
+                    <input type="hidden" name="sm-form-birthdayMonth" id="sm-form-birthdayMonth" />
+                    <input type="hidden" name="sm-form-birthdayYear" id="sm-form-birthdayYear" />
+                    <!-- <input type="hidden" class="hidden-input" name="sm-cst.Birthday" value=""> -->
+                    <!-- <input type="date" class="form__input required-input" id="required-date" min="" max=""> -->
+                    <input type="text" class="form__input required-input select__input--date" id="datepicker"
+                        placeholder="gg/mm/aaaa">
+                    <!-- <input type="text" id="datepicker" placeholder="dd/MM/yyyy" /> -->
+                    <div class="form__line-container">
+                        <div class="form__line"></div>
+                    </div>
+                    <p class="form__text wrong-date-format" id="dateinfo">
+                    </p>
+                </label>
+            </div>
+            <div class="form__text-container form__text-container--top-space">
+                <p class="form__text form__text--moved"><span class=" icon icon--gift"></span>Fidati: ti riserveremo
+                    fantastiche sorprese!</p>
+            </div>
+
+
+            <div class="form__input-container">
+
+                <div class="form__field form__field--wide">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>Categoria preferita</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Categoria_preferita" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="">Scegli categoria</option>
+                            <option class="form__option" value="Casa e arredamento">Casa e arredamento</option>
+                            <option class="form__option" value="Lavoro e ufficio">Lavoro e ufficio</option>
+                            <option class="form__option" value="Outdoor e giardinaggio">Outdoor e giardinaggio</option>
+                            <option class="form__option" value="Fitness e sport">Fitness e sport</option>
+                            <option class="form__option" value="Bambini e infanzia">Bambini e infanzia</option>
+                            <option class="form__option" value="Animali">Animali</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="form__field form__field--wide">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>Hai animali?</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Situazione_Animali" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="">Scegli una risposta</option>
+                            <option class="form__option" value="Sì, ho uno o più cani">Sì, ho uno o più cani</option>
+                            <option class="form__option" value="Sì, ho uno o più gatti">Sì, ho uno o più gatti</option>
+                            <option class="form__option" value="Sì, ho cani e gatti">Sì, ho cani e gatti</option>
+                            <option class="form__option" value="Sì, ho dei roditori">Sì, ho dei roditori</option>
+                            <option class="form__option" value="Sì, ho una piccola fattoria">Sì, ho una piccola fattoria
+                            </option>
+                            <option class="form__option" value="Non ho animali ma vorrei un cane">Non ho animali ma
+                                vorrei
+                                un cane</option>
+                            <option class="form__option" value="Non ho animali ma vorrei un gatto">Non ho animali ma
+                                vorrei
+                                un gatto</option>
+                            <option class="form__option" value="Non ho animali e non ne voglio">Non ho animali e non ne
+                                voglio</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="form__field form__field--wide">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>Hai figli?</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Situazione_Figli" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="">Scegli una risposta</option>
+                            <option class="form__option" value="Sì, uno">Sì, uno</option>
+                            <option class="form__option" value="Sì, più di uno">Sì, più di uno</option>
+                            <option class="form__option" value="No, ma ho dei nipoti">No, ma ho dei nipoti</option>
+                            <option class="form__option" value="Non ho figli">Non ho figli</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="form__field form__field--wide">
+                    <label for="sm-form-email" class="form__label">
+                        <span class="form__label-text form__label-text--moved">Data di nascita del figlio più
+                            piccolo</span>
+                        <input type="text" class="form__input select__input--date" id="datepicker2"
+                            placeholder="gg/mm/aaaa" name="sm-cst.Compleanno_Figlio">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <p class="form__text wrong-date-format" id="dateinfo">
+                        </p>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form__text-container">
+                <p class="form__text form__text--italic">
+                    Perché ti chiediamo se hai figli e quando sono nati?
+                    <span class=" icon icon--face"></span><br>
+                    Ebbene, in Aosom abbiamo sempre delle sorprese in serbo
+                    per i nostri clienti, e per il compleanno del tuo figlio più piccolo
+                    potremmo pensare ad un fantastico regalo!</p>
+            </div>
+
+            <div class="form__field form__checkbox-container">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox" name="sm-cst.Sport_Abitualmente">
+                    <span class="form__checkmark"></span>
+                    Faccio sport abitualmente<span class=" icon icon--bike"></span>
+                </label>
+            </div>
+
+            <div class="form__field form__checkbox-container">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox" name="sm-cst.Interessato_Natale">
+                    <span class="form__checkmark"></span>
+                    Sono interresato a offerte natalizie<span class=" icon icon--tree"></span>
+                </label>
+            </div>
+
+            <div class="form__field form__checkbox-container">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox" name="sm-cst.Attività_Commerciale">
+                    <span class="form__checkmark"></span>
+                    Ho un’attività commerciale<span class=" icon icon--building"></span>
+                </label>
+            </div>
+
+            <p class="basic-text--wide">Quale tipo di arredamento ti interessa?</p>
+            <!-- <input type="hidden" class="hidden-input-three-opts" name="sm-cst.Arredamento_Interesse" value=""> -->
+            <div class="form__field form__checkbox-container form__field--three-opts">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox three-opts" name="sm-cst.Arredamento_Casa">
+                    <span class="form__checkmark"></span>
+                    Per la casa
+                </label>
+            </div>
+
+            <div class="form__field form__checkbox-container form__field--three-opts">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox three-opts" name="sm-cst.Arredamento_Ufficio">
+                    <span class="form__checkmark"></span>
+                    Per l’ufficio
+                </label>
+            </div>
+
+            <div class="form__field form__checkbox-container form__field--three-opts">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox three-opts" name="sm-cst.Arredamento_Outdoor">
+                    <span class="form__checkmark"></span>
+                    Per gli esterni (outdoor/giardino)
+                </label>
+            </div>
+
+            <div class="form__input-container--wide">
+                <div class="form__field">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>Come ci hai conosciuti?</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Conosciuti_da" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="">Scegli una risposta</option>
+                            <option class="form__option" value="Ricerca su Google">Ricerca su Google</option>
+                            <option class="form__option" value="Ricerca su Bing">Ricerca su Bing</option>
+                            <option class="form__option" value="Facebook">Facebook</option>
+                            <option class="form__option" value="Instagram">Instagram</option>
+                            <option class="form__option" value="Twitter">Twitter</option>
+                            <option class="form__option" value="Pubblicità di questa offerta/concorso">Pubblicità di
+                                questa
+                                offerta/concorso</option>
+                            <option class="form__option" value="Banner su un sito">Banner su un sito</option>
+                            <option class="form__option" value="Articolo su un sito / blog">Articolo su un sito / blog
+                            </option>
+                            <option class="form__option" value="Influencer">Influencer</option>
+                            <option class="form__option" value="Passaparola">Passaparola</option>
+                            <option class="form__option" value="Comparatore di prezzi">Comparatore di prezzi</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form__input-container--wide">
+                <div class="form__field">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>Qual è il più grande pregio di Aosom Italia?</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Miglior_Pregio" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="">Scegli una risposta</option>
+                            <option class="form__option" value="Prezzo ottimo">Prezzo ottimo</option>
+                            <option class="form__option" value="Qualità prodotti ottima">Qualità prodotti ottima
+                            </option>
+                            <option class="form__option" value="Articoli che mi interessano particolarmente">Articoli
+                                che mi
+                                interessano particolarmente</option>
+                            <option class="form__option" value="Spedizione veloce (2-3 giorni lavorativi)">Spedizione
+                                veloce
+                                (2-3 giorni lavorativi)</option>
+                            <option class="form__option" value="Sito semplice da usare">Sito semplice da usare</option>
+                            <option class="form__option" value="Servizio di assistenza d’eccellenza">Servizio di
+                                assistenza
+                                d’eccellenza</option>
+                            <option class="form__option" value="Garanzia e possibilità di reso">Garanzia e possibilità
+                                di
+                                reso</option>
+                            <option class="form__option" value="Mi ispira fiducia">Mi ispira fiducia</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form__input-container--wide">
+                <div class="form__field">
+                    <label for="" class="form__label">
+                        <span class="form__label-text form__label-text--moved"><span class="red-star">*
+                            </span>E il più grande difetto?</span>
+                        <input type="hidden" class="hidden-input" name="sm-cst.Peggior_Difetto" value="">
+                        <div class="form__line-container">
+                            <div class="form__line"></div>
+                        </div>
+                        <select type="" class="form__input select__input required-input">
+                            <option class="form__option" value="Scegli una risposta">Scegli una risposta</option>
+                            <option class="form__option" value="Prezzo troppo alto">Prezzo troppo alto</option>
+                            <option class="form__option" value="Qualità prodotti non buona">Qualità prodotti non buona
+                            </option>
+                            <option class="form__option" value="Articoli di scarso interesse">Articoli di scarso
+                                interesse
+                            </option>
+                            <option class="form__option" value="Spedizione non abbastanza veloce">Spedizione non
+                                abbastanza
+                                veloce</option>
+                            <option class="form__option" value="Sito difficile da usare">Sito difficile da usare
+                            </option>
+                            <option class="form__option" value="Servizio di assistenza carente">Servizio di assistenza
+                                carente</option>
+                            <option class="form__option" value="Mancanza di servizi accessori">Mancanza di servizi
+                                accessori
+                            </option>
+                            <option class="form__option" value="Non mi ispira fiducia">Non mi ispira fiducia</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form__text-container form__text-container--wide">
+                <p class="form__text">Ti chiediamo la cortesia di accettare queste due opzioni: senza di esse non
+                    avremmo la tua autorizzazione
+                    a inviarti il coupon</p>
+            </div>
+
+            <div class="form__field form__field--wide form__checkbox-container">
+                <label class="form__checkbox-label">
+                    <input type="checkbox" class="form__checkbox required-checkbox" name="sm-cst.newsletter" required>
+                    <span class="form__checkmark"></span>
+                    <span class="red-star">*</span>Voglio iscrivermi alla newsletter: riceverò fantastici sconti e non
+                    sarò mai importunato!<span class=" icon icon--arm"></span>
+                </label>
+            </div>
+
+            <div class="form__field form__field--wide form__checkbox-container">
+                <label class="form__checkbox-label form__text">
+                    <input type="hidden" value="true" name="$sm-consent.id.TERMS_OF_SERVICE$">
+                    <input type="checkbox" class="form__checkbox required-checkbox"
+                        name="$sm-consent.name.TERMS_OF_SERVICE$" required>
+                    <span class="form__checkmark"></span>
+                    <span class="red-star">*</span>$sm-consent.desc.TERMS_OF_SERVICE$
+                </label>
+            </div>
+
+            <div class="form__field--wide form__field--wide--submit">
+                <div class="form__submit-container">
+                    <input type="submit" id="form__submit" class="form__submit" value="INVIA PER RICEVERE IL COUPON"
+                        onclick="shouldISend(event)" />
+                    <!-- onclick="shouldISend(event)" -->
+
+                    <div class="form__submit-el-container-container">
+                        <div class="form__submit-el-container">
+                            <div class="form__submit-el form__submit-el--anim">
+                                <div class="el-anim"></div>
+                            </div>
+                            <div class="form__submit-el form__submit-el--cons"></div>
+                        </div>
+                    </div>
+
+                    <!-- <p class="form__submit-text">INVIA PER RICEVERE IL COUPON</p> -->
+                </div>
+                <div class="form__submit-warn">
+                    <p class="wrapper__text wrapper__text--warn wrapper__text--warn-hidden">Sembra che alcuni campi
+                        obbligatori siano mancanti. Per
+                        favore controlla il questionario</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        /*
+ * Library: FooPicker
+ * Description: Pure JavaScript date picker
+ * Author: Yogasaikrishna
+ * License: MIT
+ * URL: https://github.com/yogasaikrishna/foopicker
+ */
+
+        var FooPicker = (function () {
+            'use strict';
+
+            var hasEventListener = window.addEventListener;
+            var weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            function FooPicker() {
+                var _self = this;
+                var _id;
+
+                var defaults = {
+                    className: 'foopicker',
+                    dateFormat: 'dd-MMM-yyyy',
+                    disable: []
+                };
+
+                if (arguments[0] && typeof arguments[0] === "object") {
+                    _self.options = extendOptions(defaults, arguments[0]);
+                    _id = _self.options.id;
+                }
+
+                // Show date picker on click
+                _self.showPicker = function () {
+                    _self.buildPicker();
+                    var pickerField = document.getElementById(_id);
+                    var pickerDiv = document.getElementById('foopicker-' + _id);
+                    if (pickerField) {
+                        var datepicker = pickerField.getBoundingClientRect();
+                        var left = datepicker.left;
+                        var top = datepicker.bottom - 7;
+                        if (pickerDiv) {
+                            pickerDiv.style.position = 'fixed';
+                            pickerDiv.style.top = top + 'px';
+                            pickerDiv.style.left = left + 'px';
+                            pickerDiv.style.zIndex = '99999';
+                        }
+                    }
+                };
+
+                // Hide date picker
+                _self.hidePicker = function (event) {
+                    setTimeout(function () {
+                        var pickerDiv, pickerField;
+                        if (!_self.monthChange && !_self.isPickerClicked) {
+                            _self.removeListeners(_id);
+                            pickerDiv = document.getElementById('foopicker-' + _id);
+                            pickerDiv.removeEventListener('click', self.handlePickerClick, false);
+                            if (pickerDiv) {
+                                pickerDiv.innerHTML = '';
+                            }
+                            _self.isDateClicked = false;
+                        } else if (!_self.isPickerClicked) {
+                            pickerField = document.getElementById(_self.options.id);
+                            if (pickerField) {
+                                pickerField.focus();
+                            }
+                            _self.monthChange = false;
+                        }
+                    }, 210);
+                };
+
+                // Select date
+                _self.selectDate = function (event) {
+                    _self.monthChange = false;
+                    var el = document.getElementById(event.target.id);
+                    var pickerField = document.getElementById(_id);
+                    if (el) {
+                        el.classList.add('foopicker__day--selected');
+                        var date = format(_self, el.dataset.day, el.dataset.month, el.dataset.year);
+                        _self.selectedDate = date;
+                        _self.selectedDay = parseInt(el.dataset.day);
+                        _self.selectedMonth = parseInt(el.dataset.month);
+                        _self.selectedYear = parseInt(el.dataset.year);
+                        if (pickerField) {
+                            pickerField.value = date;
+                            pickerField.focus();
+                            setTimeout(function () {
+                                pickerField.blur();
+                            }, 100);
+                        }
+                    }
+                    _self.isPickerClicked = false;
+                    _self.isDateClicked = true;
+                    _self.hidePicker();
+                };
+
+                _self.removeListeners = function (id) {
+                    var picker = document.getElementById(id);
+                    if (picker) {
+                        var el = picker.getElementsByClassName('foopicker__day');
+                        if (el && el.length) {
+                            for (var count = 0; count < el.length; count++) {
+                                if (typeof el[count].onclick === "function") {
+                                    var elem = document.getElementById(id + '-foopicker__day--' + (count + 1));
+                                    removeEvent(elem, 'click', _self.selectDate, false);
+                                }
+                            }
+                        }
+                    }
+                    document.removeEventListener('keydown', keyDownListener, false);
+
+                    var htmlRoot = document.getElementsByTagName('html')[0];
+                    htmlRoot.removeEventListener('click', _self.handleDocumentClick, false);
+                };
+
+                _self.changeMonth = function (event) {
+                    var className = event.target.className, positive = false;
+                    if (className.indexOf('foopicker__arrow--next') !== -1) {
+                        positive = true;
+                    }
+                    var month = positive ? _self.currentMonth + 1 : _self.currentMonth - 1;
+                    _self.updateCalendar(month);
+                };
+
+                _self.updateCalendar = function (newMonth, newYear) {
+                    _self.monthChange = true;
+                    var day = _self.currentDate;
+                    var year = newYear || _self.currentYear;
+                    _self.currentMonth = newMonth;
+                    Calendar.date = new Date(year, newMonth, day);
+                    var pickerDiv = document.getElementById('foopicker-' + _id);
+                    if (pickerDiv) {
+                        var datepicker = pickerDiv.querySelector('.foopicker');
+                        datepicker.innerHTML = Calendar.buildHeader() + Calendar.buildCalendar();
+                        _self.isPickerClicked = false;
+                        Calendar.removeListeners(_self);
+                        Calendar.addListeners(_self);
+                    }
+                };
+
+                _self.buildPicker = function () {
+                    var pickerDiv = document.getElementById('foopicker-' + _id);
+                    var pickerField = document.getElementById(_id);
+                    if (pickerDiv && !hasPicker(pickerDiv)) {
+                        var fragment, datepicker, calendar;
+                        fragment = document.createDocumentFragment();
+                        datepicker = document.createElement('div');
+                        // Add default class name
+                        datepicker.className = _self.options.className;
+
+                        // Date is selected show that month calendar
+                        var date;
+                        if (pickerField && pickerField.value && pickerField.value.length >= 10) {
+                            date = parse(_self, pickerField.value);
+                            _self.selectedDay = date.getDate();
+                            _self.selectedMonth = date.getMonth() + 1;
+                            _self.selectedYear = date.getFullYear();
+                            _self.selectedDate = format(_self, date.getDate(), date.getMonth() + 1, date.getFullYear());
+                        } else {
+                            _self.selectedDate = null;
+                            _self.selectedDay = null;
+                            _self.selectedMonth = null;
+                            _self.selectedYear = null;
+                            date = new Date();
+                        }
+                        Calendar.date = date;
+
+                        // Add calendar to datepicker
+                        datepicker.innerHTML = Calendar.buildHeader() + Calendar.buildCalendar();
+                        // Append picker to fragment and add fragment to DOM
+                        fragment.appendChild(datepicker);
+                        pickerDiv.appendChild(fragment);
+
+                        Calendar.addListeners(_self);
+
+                        // add event listener to handle clicks anywhere on date picker
+                        addEvent(pickerDiv, 'click', _self.handlePickerClick, false);
+                    }
+                    document.addEventListener('keydown', keyDownListener, false);
+
+                    // Close the date picker if clicked anywhere outside the picker element
+                    var htmlRoot = document.getElementsByTagName('html')[0];
+                    addEvent(htmlRoot, 'click', _self.handleDocumentClick, false);
+                };
+
+                _self.handlePickerClick = function (event) {
+                    event.stopPropagation();
+                    if (!_self.isDateClicked) {
+                        _self.isPickerClicked = true;
+                    }
+                };
+
+                _self.handleDocumentClick = function (event) {
+                    var pickerField = document.getElementById(_self.options.id);
+                    var pickerDiv = document.getElementById('foopicker-' + _self.options.id);
+                    _self.isPickerClicked = false;
+                    _self.monthChange = false;
+                    if (event.target !== pickerField && event.target !== pickerDiv) {
+                        _self.hidePicker();
+                    }
+                };
+
+                _self.buildTemplate = function () {
+                    var pickerDiv = document.createElement('div');
+                    pickerDiv.id = 'foopicker-' + _id;
+                    document.body.appendChild(pickerDiv);
+                    addListeners(_self);
+                };
+
+                _self.destroy = function () {
+                    var pickerDiv = document.getElementById('foopicker-' + _id);
+                    if (pickerDiv) {
+                        document.body.removeChild(pickerDiv);
+                    }
+                };
+
+                function keyDownListener() {
+                    _self.monthChange = false;
+                    _self.hidePicker();
+                }
+
+                _self.buildTemplate();
+            }
+
+            // Date formatter
+            function format(instance, day, month, year) {
+                day = day < 10 ? '0' + day : day;
+                month = month < 10 ? '0' + month : month;
+                switch (instance.options.dateFormat) {
+                    case 'dd-MM-yyyy':
+                        return day + '-' + month + '-' + year;
+                    case 'dd-MMM-yyyy':
+                        return day + '-' + getShortMonth(parseInt(month)) + '-' + year;
+                    case 'dd.MM.yyyy':
+                        return day + '.' + month + '.' + year;
+                    case 'dd.MMM.yyyy':
+                        return day + '.' + getShortMonth(parseInt(month)) + '.' + year;
+                    case 'dd/MM/yyyy':
+                        return day + '/' + month + '/' + year;
+                    case 'dd/MMM/yyyy':
+                        return day + '/' + getShortMonth(parseInt(month)) + '/' + year;
+                    case 'MM-dd-yyyy':
+                        return month + '-' + day + '-' + year;
+                    case 'MM.dd.yyyy':
+                        return month + '.' + day + '.' + year;
+                    case 'MM/dd/yyyy':
+                        return month + '/' + day + '/' + year;
+                    case 'yyyy-MM-dd':
+                        return year + '-' + month + '-' + day;
+                    case 'yyyy-MMM-dd':
+                        return year + '-' + getShortMonth(parseInt(month)) + '-' + day;
+                    case 'yyyy.MM.dd':
+                        return year + '.' + month + '.' + day;
+                    case 'yyyy.MMM.dd':
+                        return year + '.' + getShortMonth(parseInt(month)) + '.' + day;
+                    case 'yyyy/MM/dd':
+                        return year + '/' + month + '/' + day;
+                    case 'yyyy/MMM/dd':
+                        return year + '/' + getShortMonth(parseInt(month)) + '/' + day;
+                    default:
+                        return day + '-' + getShortMonth(parseInt(month)) + '-' + year;
+                }
+            }
+
+            // Date parser
+            function parse(instance, value) {
+                var date, dateArray;
+                switch (instance.options.dateFormat) {
+                    case 'dd-MM-yyyy':
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[1]) - 1, parseInt(dateArray[0]));
+                        return date;
+                    case 'dd-MMM-yyyy':
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[2]), getMonthNumber(dateArray[1]), parseInt(dateArray[0]));
+                        return date;
+                    case 'dd.MM.yyyy':
+                        dateArray = value.split('.');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[1]) - 1, parseInt(dateArray[0]));
+                        return date;
+                    case 'dd.MMM.yyyy':
+                        dateArray = value.split('.');
+                        date = new Date(parseInt(dateArray[2]), getMonthNumber(dateArray[1]), parseInt(dateArray[0]));
+                        return date;
+                    case 'dd/MM/yyyy':
+                        dateArray = value.split('/');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[1]) - 1, parseInt(dateArray[0]));
+                        return date;
+                    case 'dd/MMM/yyyy':
+                        dateArray = value.split('/');
+                        date = new Date(parseInt(dateArray[2]), getMonthNumber(dateArray[1]), parseInt(dateArray[0]));
+                        return date;
+                    case 'MM-dd-yyyy':
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[0]) - 1, parseInt(dateArray[1]));
+                        return date;
+                    case 'MM.dd.yyyy':
+                        dateArray = value.split('.');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[0]) - 1, parseInt(dateArray[1]));
+                        return date;
+                    case 'MM/dd/yyyy':
+                        dateArray = value.split('/');
+                        date = new Date(parseInt(dateArray[2]), parseInt(dateArray[0]) - 1, parseInt(dateArray[1]));
+                        return date;
+                    case 'yyyy-MM-dd':
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]));
+                        return date;
+                    case 'yyyy-MMM-dd':
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[0]), getMonthNumber(dateArray[1]), parseInt(dateArray[2]));
+                        return date;
+                    case 'yyyy.MM.dd':
+                        dateArray = value.split('.');
+                        date = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]));
+                        return date;
+                    case 'yyyy.MMM.dd':
+                        dateArray = value.split('.');
+                        date = new Date(parseInt(dateArray[0]), getMonthNumber(dateArray[1]), parseInt(dateArray[2]));
+                        return date;
+                    case 'yyyy/MM/dd':
+                        dateArray = value.split('/');
+                        date = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]));
+                        return date;
+                    case 'yyyy/MMM/dd':
+                        dateArray = value.split('/');
+                        date = new Date(parseInt(dateArray[0]), getMonthNumber(dateArray[1]), parseInt(dateArray[2]));
+                        return date;
+                    default:
+                        dateArray = value.split('-');
+                        date = new Date(parseInt(dateArray[2]), getMonthNumber(dateArray[1]), parseInt(dateArray[0]));
+                        return date;
+                }
+            }
+
+            // Extend default options
+            function extendOptions(defaults, options) {
+                var property;
+                for (property in options) {
+                    if (options.hasOwnProperty(property)) {
+                        defaults[property] = options[property];
+                    }
+                }
+                return defaults;
+            }
+
+            // Build Calendar
+            var Calendar = {
+                // Get current date
+                date: new Date(),
+
+                // Get day of the week
+                day: function () {
+                    return this.date.getDay();
+                },
+
+                // Get today day
+                today: function () {
+                    return this.date.getDate();
+                },
+
+                // Get current month
+                month: function () {
+                    return this.date.getMonth();
+                },
+
+                // Get current year
+                year: function () {
+                    return this.date.getFullYear();
+                },
+
+                getCurrentYear: function () {
+                    return new Date().getFullYear();
+                },
+
+                rowPadding: function () {
+                    var startWeekDay = getWeekDay(1, this.month(), this.year());
+                    return [6, 0, 1, 2, 3, 4, 5][startWeekDay];
+                },
+
+                // Build calendar header
+                buildHeader: function () {
+                    return '<div class="foopicker__header">' +
+                        '<div class="foopicker__arrow foopicker__arrow--prev"></div>' +
+                        '<div class="foopicker__date">' + this.buildMonths() +
+                        '&nbsp;&nbsp;' + this.buildYears() + '</div>' +
+                        '<div class="foopicker__arrow foopicker__arrow--next"></div></div>';
+                },
+
+                // Build months select
+                buildMonths: function () {
+                    var elem = '<select class="foopicker__date--month">', month = this.month();
+                    for (var i = 0; i < months.length; i++) {
+                        elem += '<option value="' + i + '"';
+                        if (i === month) {
+                            elem += ' selected';
+                        }
+                        elem += '>' + months[i] + "</option>";
+                    }
+                    elem += '</select>';
+                    return elem;
+                },
+
+                // Build years select
+                buildYears: function () {
+                    var elem = '<select class="foopicker__date--year">', currentYear = this.getCurrentYear();
+                    var year = this.year();
+                    for (var i = year - 100; i <= currentYear; i++) {
+                        elem += '<option value="' + i + '"';
+                        if (i === year) {
+                            elem += ' selected';
+                        }
+                        elem += '>' + i + '</option>';
+                    }
+                    elem += '</select>';
+                    return elem;
+                },
+
+                // Build calendar body
+                buildCalendar: function () {
+                    var index;
+                    var daysInMonth = getDaysInMonth(this.year(), this.month());
+                    var template = '<div class="foopicker__calendar"><table><tr>';
+                    for (index = 0; index < weeks.length; index++) {
+                        template += '<td><div class="foopicker__week">' + weeks[index] + '</div></td>';
+                    }
+                    template += '</tr><tr>';
+                    var columnIndex = 0, dayClass = '';
+                    var day = 0 - this.rowPadding();
+                    for (; day < daysInMonth; day++) {
+                        if (day < 0) {
+                            template += '<td></td>';
+                        } else {
+                            dayClass = day === (this.today() - 1) ? 'foopicker__day--today' : '';
+                            template += '<td><div class="foopicker__day ' + dayClass + '" ';
+                            template += 'data-day="' + (day + 1) + '" data-month="' + (this.month() + 1);
+                            template += '" data-year="' + this.year() + '" ';
+                            template += '>' + (day + 1) + '</div></td>';
+                        }
+                        columnIndex++;
+                        if (columnIndex % 7 === 0) {
+                            columnIndex = 0;
+                            template += '</tr><tr>';
+                        }
+                    }
+                    template += '</tr></table></div>';
+                    return template;
+                },
+
+                // Header click listeners
+                addListeners: function (instance) {
+                    var id = instance.options.id;
+                    var pickerDiv = document.getElementById('foopicker-' + id);
+                    if (pickerDiv) {
+                        var prevBtn = pickerDiv.getElementsByClassName('foopicker__arrow--prev')[0];
+                        var nextBtn = pickerDiv.getElementsByClassName('foopicker__arrow--next')[0];
+                        addEvent(prevBtn, 'click', instance.changeMonth, false);
+                        addEvent(nextBtn, 'click', instance.changeMonth, false);
+
+                        var monthSelect = pickerDiv.getElementsByClassName('foopicker__date--month')[0];
+                        var yearSelect = pickerDiv.getElementsByClassName('foopicker__date--year')[0];
+
+                        // add event listener for month change
+                        addEvent(monthSelect, 'change', this.handleMonthChange.bind(null, instance), false);
+
+                        // add event listener for year change
+                        addEvent(yearSelect, 'change', this.handleYearChange.bind(null, instance), false);
+                    }
+
+                    this.changeInstanceDate(instance);
+                    this.modifyDateClass(instance);
+
+                    var el = pickerDiv.getElementsByClassName('foopicker__day');
+                    if (el && el.length) {
+                        for (var count = 0; count < el.length; count++) {
+                            if (typeof el[count].onclick !== "function") {
+                                if (el[count].className && el[count].className.indexOf('foopicker__day--disabled') === -1) {
+                                    var elem = document.getElementById(id + '-foopicker__day--' + (count + 1));
+                                    addEvent(elem, 'click', instance.selectDate, false);
+                                }
+                            }
+                        }
+                    }
+                },
+
+                handleMonthChange: function (instance, event) {
+                    instance.updateCalendar(event.target.value);
+                },
+
+                handleYearChange: function (instance, event) {
+                    instance.updateCalendar(instance.currentMonth, event.target.value);
+                },
+
+                removeListeners: function (instance) {
+                    var id = instance.options.id;
+                    var pickerDiv = document.getElementById('foopicker-' + id);
+                    if (pickerDiv) {
+                        var monthSelect = pickerDiv.getElementsByClassName('foopicker__date--month')[0];
+                        var yearSelect = pickerDiv.getElementsByClassName('foopicker__date--year')[0];
+
+                        monthSelect.removeEventListener('change', this.handleMonthChange, false);
+                        yearSelect.removeEventListener('change', this.handleYearChange, false);
+                    }
+                },
+
+                modifyDateClass: function (instance) {
+                    var id = instance.options.id, day = instance.selectedDay, currentDate, disabled;
+                    var date = new Date();
+                    var month = date.getMonth(), year = date.getFullYear(), dayClass;
+                    var pickerDiv = document.getElementById('foopicker-' + id);
+                    if (pickerDiv) {
+                        var el = pickerDiv.getElementsByClassName('foopicker__day');
+                        if (el && el.length) {
+                            for (var count = 0; count < el.length; count++) {
+                                disabled = '';
+                                currentDate = format(instance, el[count].dataset.day, el[count].dataset.month,
+                                    el[count].dataset.year);
+                                if (instance.options.disable && instance.options.disable.indexOf(currentDate) !== -1) {
+                                    disabled = 'foopicker__day--disabled';
+                                }
+
+                                el[count].className = 'foopicker__day';
+                                if ((count + 1) === day && this.month() === instance.selectedMonth - 1 &&
+                                    this.year() === instance.selectedYear) {
+                                    el[count].className += ' foopicker__day--selected' + ' ' + disabled;
+                                } else {
+                                    if (el[count].dataset.day === this.today() && month === this.month() && year === this.year()) {
+                                        dayClass = ' foopicker__day--today';
+                                    } else {
+                                        dayClass = '';
+                                    }
+                                    el[count].className += dayClass + ' ' + disabled;
+                                }
+
+                                if ((count + 1) === date.getDate() && this.month() === month && this.year() === year) {
+                                    el[count].classList.add('foopicker__day--today');
+                                }
+                                el[count].id = id + '-foopicker__day--' + (count + 1);
+                            }
+                        }
+                    }
+                },
+
+                // Change date in instance
+                changeInstanceDate: function (instance) {
+                    instance.currentDay = this.day();
+                    instance.currentDate = this.today();
+                    instance.currentMonth = this.month();
+                    instance.currentYear = this.year();
+                }
+            };
+
+            function addListeners(picker) {
+                var el = document.getElementById(picker.options.id);
+                if (el) {
+                    addEvent(el, 'click', picker.showPicker, false);
+                    // addEvent(el, 'blur', picker.hidePicker, false);
+                }
+            }
+
+            function getMonths(month) {
+                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December'];
+                return month >= 0 ? months[month] : months;
+            }
+
+            function getShortMonth(month) {
+                return months[parseInt(month) - 1];
+            }
+
+            function getMonthNumber(month) {
+                var formatted = month.charAt(0).toUpperCase() + month.substr(1, month.length - 1).toLowerCase();
+                return months.indexOf(formatted);
+            }
+
+            function getDaysInMonth(year, month) {
+                return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+            }
+
+            function getWeekDay(date, month, year) {
+                return new Date(year, month, date).getDay();
+            }
+
+            // Check if current year is leap year
+            function isLeapYear(year) {
+                return year % 100 === 0 ? year % 400 === 0 ? true : false : year % 4 === 0;
+            }
+
+            // Check if foopicker is already built and added to DOM
+            function hasPicker(el) {
+                return el && el.querySelector('.foopicker') ? true : false;
+            }
+
+            // Function to add events
+            function addEvent(el, type, callback, capture) {
+                if (hasEventListener) {
+                    if (el) {
+                        el.addEventListener(type, callback, capture);
+                    }
+                } else {
+                    if (el) {
+                        el.attachEvent('on' + type, callback);
+                    }
+                }
+            }
+
+            // Function to remove events
+            function removeEvent(el, type, callback, capture) {
+                if (hasEventListener) {
+                    if (el) {
+                        el.removeEventListener(type, callback, capture);
+                    }
+                } else {
+                    if (el) {
+                        el.detachEvent('on' + type, callback);
+                    }
+                }
+            }
+
+            return FooPicker;
+        })();
+
+        var foopicker = new FooPicker({
+            id: 'datepicker',
+            dateFormat: 'dd/MM/yyyy'
+        });
+
+        var foopicker2 = new FooPicker({
+            id: 'datepicker2',
+            dateFormat: 'dd/MM/yyyy'
+        });
+
+    </script>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+        // function updateInputs() {
+        //     const inputName = document.getElementById('part-name');
+        //     const inputSurname = document.getElementById('part-surname');
+        //     const fullName = document.getElementById('sm-form-name');
+        //     fullName.value = inputName.value + ' ' + inputSurname.value;
+
+        //     const hiddenInputs = document.getElementsByClassName('hidden-input');
+        //     for (let i = 0; i < hiddenInputs.length; i++) {
+        //         let hiddenInput = hiddenInputs[i];
+        //         hiddenInput.value = hiddenInput.parentElement.getElementsByClassName('form__input')[0].value;
+        //         console.log(hiddenInput.value);
+        //     }
+
+        //     const hiddenInputThreeOpts = document.getElementsByClassName('hidden-input-three-opts')[0];
+        //     const threeOpts = document.getElementsByClassName('three-opts');
+        //     for (let i = 0; i < threeOpts.length; i++) {
+        //         if (threeOpts[i].checked == true)
+        //             hiddenInputThreeOpts.value += threeOpts[i].value + ',';
+        //     }
+
+        //     const bdayDayInput = document.getElementById('sm-form-birthdayDay');
+        //     const bdayMonthInput = document.getElementById('sm-form-birthdayMonth');
+        //     const bdayYearInput = document.getElementById('sm-form-birthdayYear');
+        //     const bdayDate = document.getElementById('datepicker').value;
+        //     const pattern = /^[0-9\+]{2}\/[0-9\+]{2}\/[0-9\+]{4}$/;
+        //     console.log(bdayDate); // true
+        //     console.log(pattern.test(bdayDate)); // true
+        //     let dateArray = bdayDate.split('/');
+        //     bdayDayInput.value = dateArray[0];
+        //     bdayMonthInput.value = dateArray[1];
+        //     bdayYearInput.value = dateArray[2];
+
+        //     console.log(dateArray);
+
+        //     if (fullName.value) {
+        //         sendForm = true;
+        //     } else {
+        //         sendForm = false;
+        //     }
+        // }
+
+        function sendForm(e) {
+            let sendForm = false;
+
+            function updateInputs() {
+                const inputName = document.getElementById('part-name');
+                const inputSurname = document.getElementById('part-surname');
+                const fullName = document.getElementById('sm-form-name');
+                fullName.value = inputName.value + ' ' + inputSurname.value;
+
+                const hiddenInputs = document.getElementsByClassName('hidden-input');
+                for (let i = 0; i < hiddenInputs.length; i++) {
+                    let hiddenInput = hiddenInputs[i];
+                    hiddenInput.value = hiddenInput.parentElement.getElementsByClassName('form__input')[0].value;
+                    console.log(hiddenInput.value);
+                }
+
+                // const hiddenInputThreeOpts = document.getElementsByClassName('hidden-input-three-opts')[0];
+                // const threeOpts = document.getElementsByClassName('three-opts');
+                // for (let i = 0; i < threeOpts.length; i++) {
+                //     if (threeOpts[i].checked == true)
+                //         hiddenInputThreeOpts.value += threeOpts[i].value + ',';
+                // }
+
+                const bdayDayInput = document.getElementById('sm-form-birthdayDay');
+                const bdayMonthInput = document.getElementById('sm-form-birthdayMonth');
+                const bdayYearInput = document.getElementById('sm-form-birthdayYear');
+                const bdayDate = document.getElementById('datepicker').value;
+                const pattern = /^[0-9\+]{2}\/[0-9\+]{2}\/[0-9\+]{4}$/;
+                console.log(bdayDate); // true
+                console.log(pattern.test(bdayDate)); // true
+                let dateArray = bdayDate.split('/');
+                bdayDayInput.value = dateArray[0];
+                bdayMonthInput.value = dateArray[1];
+                bdayYearInput.value = dateArray[2];
+
+                console.log(dateArray);
+
+                if (fullName.value) {
+                    sendForm = true;
+                } else {
+                    sendForm = false;
+                }
+            }
+
+
+
+            function validateForm() {
+                let isValidationOk = false;
+
+                let checkIfRequiredCheckboxesAreChecked = function () {
+                    let areRequiredChecked = false;
+                    const requiredCheckboxes = document.getElementsByClassName('required-checkbox');
+                    for (let i = 0; i < requiredCheckboxes.length; i++) {
+                        let input = requiredCheckboxes[i];
+                        if (input.checked === false) {
+                            areRequiredChecked = false;
+                            break;
+                        } else {
+                            areRequiredChecked = true;
+                        }
+                    }
+
+                    if (areRequiredChecked === false) {
+                        return false;
+
+                    } else {
+                        return true;
+                    }
+                }();
+
+                let checkIfRequiredInputsAreFilled = function () {
+                    let areInputsFilled = false;
+                    const requiredInputs = document.getElementsByClassName("required-input");
+                    for (let i = 0; i < requiredInputs.length; i++) {
+                        let requiredInput = requiredInputs[i];
+                        if (requiredInput.value === "") {
+                            // console.log(requiredInput);
+                            return false;
+                        } else {
+                            areInputsFilled = true;
+                        }
+                    }
+
+                    return areInputsFilled;
+                }()
+
+                let checkIfSelectInputsAreFilled = function () {
+                    let areSelectInputsFilled = false;
+                    const selectInputs = document.getElementsByClassName("select__input");
+                    for (let i = 0; i < selectInputs.length; i++) {
+                        if (selectInputs[i].value === "") {
+                            areSelectInputsFilled = false;
+                            break;
+                        } else {
+                            areSelectInputsFilled = true;
+                        }
+                    }
+
+                    return areSelectInputsFilled;
+                }()
+
+                function fillWarning(isDate1Proper, date1, date2) {
+                    const dateInfo = document.getElementById("dateinfo");
+
+                    if (!isDate1Proper) {
+                        if (date1 === "") {
+                            dateInfo.innerText = 'Inserisci la data di nascita';
+                        } else {
+                            dateInfo.innerText = 'La data immessa è sbagliata: controlla il formato';
+                        }
+                    }
+                }
+
+                let checkIfDateHaveProperFormatAndFilled = function () {
+                    // let areDateHaveProperFormatAndAdult = false;
+                    let areDateHaveProperFormat = false;
+                    let dateInput1 = document.getElementById("datepicker").value;
+                    let dateInput2 = document.getElementById("datepicker2").value;
+                    const pattern = /^[0-9\+]{2}\/[0-9\+]{2}\/[0-9\+]{4}$/;
+
+                    // let mydate = dateInput1.value;
+                    // let myDateYear = "";
+
+
+                    // let today = new Date();
+                    // let maxYear = today.getFullYear() - 19;
+
+                    // console.log(maxYear);
+                    // console.log((myDateYear-maxYear));
+                    // let isAdult = false;
+                    // if ((myDateYear-maxYear)>=18) {
+                    //     isAdult = true;
+                    // }
+
+                    if (pattern.test(dateInput1)) {
+                        if (pattern.test(dateInput2)) {
+                            areDateHaveProperFormat = true;
+                        } else if (dateInput2 === "") {
+                            areDateHaveProperFormat = true;
+                        } else {
+                            areDateHaveProperFormat = false;
+                        }
+
+                        fillWarning(true, dateInput1, dateInput2);
+                    } else {
+                        fillWarning(false, dateInput1, dateInput2);
+                    }
+
+                    // console.log(isAdult);
+                    // if(areDateHaveProperFormat && isAdult) {
+                    //     areDateHaveProperFormatAndAdult = true;
+                    // }
+
+                    // return areDateHaveProperFormatAndAdult;
+                    return areDateHaveProperFormat;
+                }()
+
+                console.log('Are checkboxes checked? ' + checkIfRequiredCheckboxesAreChecked)
+                console.log('Are inputs filled? ' + checkIfRequiredInputsAreFilled)
+                console.log('Are select inputs filled? ' + checkIfSelectInputsAreFilled)
+                console.log('Are date inputs proper? ' + checkIfDateHaveProperFormatAndFilled)
+
+                if (checkIfRequiredCheckboxesAreChecked && checkIfRequiredInputsAreFilled && checkIfSelectInputsAreFilled && checkIfDateHaveProperFormatAndFilled) {
+                    isValidationOk = true;
+                    //go to update inputs
+                    updateInputs()
+                } else {
+                    isValidationOk = false;
+                }
+                console.log('Is validation ok? ' + isValidationOk)
+            }
+            validateForm();
+
+            return sendForm;
+        }
+
+        // function validateFields() {
+        //     labels = document.getElementsByClassName('form__label-text');
+        //     for (let i = 0; i < labels.length; i++) {
+        //         // console.log(labels[0].nextSibling.nextSibling.value)
+        //         //jesli form__label-text ma element z gwiazdka czyli red-star
+        //         if (labels[i].getElementsByClassName('red-star').length > 0 && labels[0].nextSibling.nextSibling.value === "") {
+        //         // if (labels[i].getElementsByClassName('red-star').length > 0 && labels[0].parentElement.getElementsByClassName('form__input')[0].value == "") {
+        //             console.log(labels[i].innerHTML);
+        //             labels[i].classList.add('form__label-text--red');
+
+        //             if (labels[i].parentElement.getElementsByClassName('form__text--red').length > 0) {
+        //                 labels[i].parentElement.getElementsByClassName('form__text--red')[0].classList.remove('form__text--warn-hidden');
+        //                 labels[i].parentElement.getElementsByClassName('form__line')[0].classList.add('form__line--red');
+        //             }
+        //         } else {
+        //         }
+        //     }
+        // }
+
+        function validateFields() {
+
+            const inputs = document.getElementsByClassName('required-input');
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].value === "") {
+                    inputs[i].parentElement.getElementsByClassName('form__label-text')[0].classList.add('form__label-text--red');
+                    inputs[i].parentElement.getElementsByClassName('form__line')[0].classList.add('form__line--red');
+                    if (inputs[i].parentElement.getElementsByClassName('form__text--red').length > 0) {
+                        inputs[i].parentElement.getElementsByClassName('form__text--red')[0].classList.remove('form__text--warn-hidden');
+                    }
+                }
+            }
+
+            const checkboxes = document.getElementsByClassName('required-checkbox');
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked === false) {
+                    checkboxes[i].parentElement.classList.add('form__label-text--red');
+                }
+            }
+
+            // if (pattern.test(dateInput1)) {
+            //     if (pattern.test(dateInput2)) {
+            //         areDateHaveProperFormat = true;
+            //     } else if (dateInput2 === "") {
+            //         areDateHaveProperFormat = true;
+            //     } else {
+            //         areDateHaveProperFormat = false;
+            //     }
+            // } else {
+            // }
+
+
+            // for (let i = 0; i < dateInputs.length; i++) {
+            //     if (!(pattern.test(dateInputs[0].value))) {
+            //         dateInputs[0].parentElement.getElementsByClassName('wrong-date-format')[0].classList.remove('form__text--warn-hidden');
+            //     } else {
+            //         if (myDateYear-maxYear>18) {
+            //             dateInputs[0].parentElement.getElementsByClassName('wrong-date-format')[0].classList.remove('form__text--warn-hidden'); 
+            //         }
+            //     }
+
+            //     if (!(pattern.test(dateInputs[1].value)) && dateInputs[1].value !== "") {
+            //         dateInputs[1].parentElement.getElementsByClassName('wrong-date-format')[0].classList.remove('form__text--warn-hidden');
+            //     }
+            // }
+
+        }
+
+        function goOnTop() {
+            window.scrollTo(0, 0);
+        }
+
+        function addClassAnimation() {
+            document.getElementById('form__submit').parentElement.getElementsByClassName('el-anim')[0].classList.add('el-animation');
+        }
+
+        function showMainWarn() {
+            document.getElementsByClassName('wrapper__text--warn')[0].classList.remove('wrapper__text--warn-hidden');
+        }
+
+        function hideMainWarn() {
+            document.getElementsByClassName('wrapper__text--warn')[0].classList.add('wrapper__text--warn-hidden');
+        }
+
+        // function addMinAndMaxDate() {
+        //     const bDayDate = document.getElementById('foopicker');
+        //     let today = new Date();
+        //     const dd = String(today.getDate()).padStart(2, '0');
+        //     const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        //     const yyyyMax = today.getFullYear() - 18;
+        //     const yyyyMin = today.getFullYear() - 120;
+        //     minDate = yyyyMin + '-' + mm + '-' + dd;
+        //     maxDate = yyyyMax + '-' + mm + '-' + dd;
+        //     bDayDate.max = maxDate;
+        //     bDayDate.min = minDate;
+        // } addMinAndMaxDate();
+
+        function dateFormat(value) {
+            let format = false;
+            const pattern = /^[0-9\+]{2}\/[0-9\+]{2}\/[0-9\+]{4}$/;
+
+            if (pattern.test(value)) {
+                format = true;
+            } else {
+                return false;
+            }
+
+            return format;
+        }
+
+        function shouldISend(e) {
+            let send = sendForm();
+            let goodDate1Format = dateFormat(document.getElementsByClassName('select__input--date')[0].value);
+            if (!send || !goodDate1Format) {
+                e.preventDefault();
+                console.log("DONT SEND!!");
+                addClassAnimation();
+                showMainWarn();
+                setTimeout(function removeClass() {
+                    document.getElementById('form__submit').parentElement.getElementsByClassName('el-anim')[0].classList.remove('el-animation');
+                }, 700);
+                validateFields();
+                setTimeout(goOnTop, 700);
+            } else {
+                addClassAnimation();
+                hideMainWarn();
+                setTimeout(goOnTop, 700);
+                console.log("SEEEND!");
+            }
+        }
+
+        function animatePlaceholders() {
+            this.parentElement.getElementsByClassName('form__label-text')[0].classList.add('form__label-text--moved');
+        }
+
+        function resetPlaceholders() {
+            if (this.value === "") {
+                this.parentElement.getElementsByClassName('form__label-text')[0].classList.remove('form__label-text--moved');
+            }
+        }
+
+        function resetWarning() {
+            if (this.value !== "") {
+                this.parentElement.getElementsByClassName('form__label-text')[0].classList.remove('form__label-text--red');
+                this.parentElement.getElementsByClassName('form__line')[0].classList.remove('form__line--red');
+                if (this.parentElement.getElementsByClassName('form__text--red').length > 0) {
+                    this.parentElement.getElementsByClassName('form__text--red')[0].classList.add('form__text--warn-hidden');
+                }
+
+            }
+        }
+
+        function wideLine() {
+            this.parentElement.getElementsByClassName('form__line')[0].classList.add('form__line--wide');
+        }
+
+        function resetWideLine() {
+            this.parentElement.getElementsByClassName('form__line')[0].classList.remove('form__line--wide');
+        }
+
+        function deleteWarnColor() {
+            if (this.checked === true) {
+                this.parentElement.classList.remove('form__label-text--red');
+            }
+        }
+
+        function deleteWarnDate() {
+            if (dateFormat(this.value)) {
+                this.parentElement.getElementsByClassName('wrong-date-format')[0].innerText = "";
+            } else {
+                if (this.value === "") {
+                    this.parentElement.getElementsByClassName('wrong-date-format')[0].innerText = "";
+                    if (this.classList.contains('required-input')) {
+                        this.parentElement.getElementsByClassName('wrong-date-format')[0].innerText = "Inserisci la data di nascita";
+                    }
+                } else {
+                    this.parentElement.getElementsByClassName('wrong-date-format')[0].innerText = "La data immessa è sbagliata: controlla il formato";
+                }
+            }
+        }
+
+        const formInputsAnimated = document.getElementsByClassName('form__input--animated');
+        const formInputs = document.getElementsByClassName('form__input');
+        const formLabelsAnimated = document.getElementsByClassName('form__label-text--animated');
+        const checkboxes = document.getElementsByClassName('required-checkbox');
+        const dateInputs = document.getElementsByClassName('select__input--date');
+
+
+
+        for (let i = 0; i < formInputs.length; i++) {
+            let formInput = formInputs[i];
+            formInput.addEventListener('blur', resetWarning);
+            formInput.addEventListener('focus', wideLine);
+            formInput.addEventListener('blur', resetWideLine);
+        }
+
+        for (let i = 0; i < formInputsAnimated.length; i++) {
+            let formInput = formInputsAnimated[i];
+            formInput.addEventListener('focus', animatePlaceholders);
+            formInput.addEventListener('blur', resetPlaceholders);
+        }
+
+        for (let i = 0; i < formLabelsAnimated.length; i++) {
+            let formLabel = formLabelsAnimated[i];
+            formLabel.addEventListener('click', animatePlaceholders);
+        }
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].addEventListener('change', deleteWarnColor);
+        }
+
+        for (let i = 0; i < dateInputs.length; i++) {
+            dateInputs[i].addEventListener('blur', deleteWarnDate);
+        }
+
+
+    </script>
+</body>
+
+</html>
